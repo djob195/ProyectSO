@@ -1,0 +1,148 @@
+#include <conio.h>
+#include <dos.h>
+#include<stdlib.h>
+#include "mouse.h"
+#include "render.h"
+#include "keyword.h"
+
+#define INTTICK 0X1C    /* The clock tick   interrupt */
+#ifdef __cplusplus
+    #define __CPPARGS ...
+#else
+    #define __CPPARGS
+#endif
+
+
+float countClock=0;
+struct PCB
+{
+	int screenPcb [24][18];
+	int Live;
+	int Play;
+	int ID;
+	float Quantum;	
+};
+PCB pcbs [6];
+
+void clean(int ID)
+{
+	for (int i = 0; i <24; i++)
+	{
+	    for (int j = 0; j < 18; j++)
+	    {
+		pcbs[ID].screenPcb[i][j]=0;
+	    }
+	}
+}
+
+int isLive(int ID)
+{
+	if(pcbs[ID].Live==1)
+	{
+		return 1;
+	}		
+	return 0;
+}
+
+int isPlay(int ID)
+{
+	if(pcbs[ID].Play==1)
+	{
+		return 1;
+	}		
+	return 0;
+}
+
+int isWork(int ID)
+{
+	if( (isLive(ID)==1) && (isWork(ID)==1) && (pcbs[ID].Quantum <= countClock) )
+	{
+		return 1;
+	}		
+	return 0;
+}
+
+void setQuantum(int ID,int quantum)
+{
+	pcbs[ID].Quantum = quantum*0.018206;
+}
+
+void activeScreen(int ID, int x, int y)
+{
+	pcbs[ID].screenPcb[x][y]=1;
+}
+
+    
+void paintSCREEN(int ID,int x, int y, int COLOR)    
+{
+        x++;
+        y++;
+	x= (ID*25) + (x+3);
+	y = (ID*19) + (y+2);
+        gotoxy(x,y);
+    	textbackground(COLOR);
+    	cprintf(" ");
+}
+
+void painted(int ID,int x, int y, int color)
+{
+	if(pcbs[ID].screenPcb[x][y]==1)
+        {
+	    paintSCREEN(x,y,color);
+        }
+}
+
+void interrupt (*oldhandler)(__CPPARGS);
+void interrupt handler(__CPPARGS)
+{
+	disable();
+	countClock+=0.018206;
+	enable();
+	oldhandler();
+}
+
+void startClock(void)
+{
+	oldhandler = getvect(INTTICK);
+	setvect(INTTICK, handler);
+}
+
+void stopClock(void)
+{
+	setvect(INTTICK, oldhandler);
+}
+
+void startPCBs(void)
+{
+	for(int i = 0; i < 6; i++)
+ 	{
+
+		pcbs[i].ID = i;
+	}
+}
+
+int main(void)
+{	
+	startClock();
+	//startPCBs();
+	ResetRaton();
+	RenderKernel *render = new RenderKernel();
+	startClock();
+	int exitFlag = 0;
+	mData mouseData;
+	gotoxy(5,46);
+	while (exitFlag==0)
+	{
+		mouseData = isClicked();
+		if(mouseData.isClick == 1)
+		{
+			//gotoxy(5,46);
+			pointPCB point; 
+		       	point=render->getPointZ(mouseData.mouseX, mouseData.mouseY);
+		        //cprintf("is click x: %d y: %d z: %d error: %d",point.x, point.y, point.z, point.error);
+		}
+		//isKeyPress();
+	}
+	stopClock();
+	return 0;
+}

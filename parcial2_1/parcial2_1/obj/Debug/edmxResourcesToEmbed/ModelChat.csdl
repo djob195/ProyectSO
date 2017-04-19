@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SOParcialModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Chat">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Port" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Port" Type="Int32" Nullable="false" />
+    <Property Name="Alias" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="userChat" Relationship="Self.FK_userChat_Chat" FromRole="Chat" ToRole="userChat" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Port" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Port" Type="Int32" Nullable="false" />
+    <Property Name="Alias" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="userChat" Relationship="Self.FK_userChat_User" FromRole="User" ToRole="userChat" />
+  </EntityType>
+  <EntityType Name="userChat">
+    <Key>
+      <PropertyRef Name="idUser" />
+      <PropertyRef Name="portUser" />
+      <PropertyRef Name="idChat" />
+      <PropertyRef Name="portChat" />
+      <PropertyRef Name="message" />
+      <PropertyRef Name="date" />
+    </Key>
+    <Property Name="idUser" Type="Int32" Nullable="false" />
+    <Property Name="portUser" Type="Int32" Nullable="false" />
+    <Property Name="idChat" Type="Int32" Nullable="false" />
+    <Property Name="portChat" Type="Int32" Nullable="false" />
+    <Property Name="message" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Chat" Relationship="Self.FK_userChat_Chat" FromRole="userChat" ToRole="Chat" />
+    <NavigationProperty Name="User" Relationship="Self.FK_userChat_User" FromRole="userChat" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_userChat_Chat">
+    <End Role="Chat" Type="Self.Chat" Multiplicity="1" />
+    <End Role="userChat" Type="Self.userChat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Chat">
+        <PropertyRef Name="ID" />
+        <PropertyRef Name="Port" />
+      </Principal>
+      <Dependent Role="userChat">
+        <PropertyRef Name="idChat" />
+        <PropertyRef Name="portChat" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userChat_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="userChat" Type="Self.userChat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+        <PropertyRef Name="Port" />
+      </Principal>
+      <Dependent Role="userChat">
+        <PropertyRef Name="idUser" />
+        <PropertyRef Name="portUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SOParcialEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Chat" EntityType="Self.Chat" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <EntitySet Name="userChat" EntityType="Self.userChat" />
+    <AssociationSet Name="FK_userChat_Chat" Association="Self.FK_userChat_Chat">
+      <End Role="Chat" EntitySet="Chat" />
+      <End Role="userChat" EntitySet="userChat" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userChat_User" Association="Self.FK_userChat_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="userChat" EntitySet="userChat" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

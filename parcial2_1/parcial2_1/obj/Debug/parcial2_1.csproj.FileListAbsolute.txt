@@ -1,0 +1,13 @@
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\bin\Debug\parcial2_1.exe.config
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\bin\Debug\parcial2_1.exe
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\bin\Debug\parcial2_1.pdb
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\obj\Debug\parcial2_1.CHAT.resources
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\obj\Debug\parcial2_1.Properties.Resources.resources
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\obj\Debug\parcial2_1.csproj.GenerateResource.Cache
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\obj\Debug\parcial2_1.exe
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\obj\Debug\parcial2_1.pdb
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\bin\Debug\EntityFramework.dll
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\bin\Debug\EntityFramework.SqlServer.dll
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\bin\Debug\EntityFramework.xml
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\bin\Debug\EntityFramework.SqlServer.xml
+c:\users\djore\onedrive\documentos\visual studio 2015\Projects\parcial2_1\parcial2_1\obj\Debug\parcial2_1.csprojResolveAssemblyReference.cache

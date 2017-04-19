@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SOParcialModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Chat">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Port" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Port" Type="int" Nullable="false" />
+    <Property Name="Alias" Type="nchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Port" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Port" Type="int" Nullable="false" />
+    <Property Name="Alias" Type="nchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'SOParcial.dbo.userChat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="userChat">
+    <Key>
+      <PropertyRef Name="idUser" />
+      <PropertyRef Name="portUser" />
+      <PropertyRef Name="idChat" />
+      <PropertyRef Name="portChat" />
+      <PropertyRef Name="message" />
+      <PropertyRef Name="date" />
+    </Key>
+    <Property Name="idUser" Type="int" Nullable="false" />
+    <Property Name="portUser" Type="int" Nullable="false" />
+    <Property Name="idChat" Type="int" Nullable="false" />
+    <Property Name="portChat" Type="int" Nullable="false" />
+    <Property Name="message" Type="nchar" MaxLength="200" Nullable="false" />
+    <Property Name="date" Type="date" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_userChat_Chat">
+    <End Role="Chat" Type="Self.Chat" Multiplicity="1" />
+    <End Role="userChat" Type="Self.userChat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Chat">
+        <PropertyRef Name="ID" />
+        <PropertyRef Name="Port" />
+      </Principal>
+      <Dependent Role="userChat">
+        <PropertyRef Name="idChat" />
+        <PropertyRef Name="portChat" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_userChat_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="userChat" Type="Self.userChat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+        <PropertyRef Name="Port" />
+      </Principal>
+      <Dependent Role="userChat">
+        <PropertyRef Name="idUser" />
+        <PropertyRef Name="portUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SOParcialModelStoreContainer">
+    <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="userChat" EntityType="Self.userChat" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [userChat].[idUser] AS [idUser], 
+    [userChat].[portUser] AS [portUser], 
+    [userChat].[idChat] AS [idChat], 
+    [userChat].[portChat] AS [portChat], 
+    [userChat].[message] AS [message], 
+    [userChat].[date] AS [date]
+    FROM [dbo].[userChat] AS [userChat]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_userChat_Chat" Association="Self.FK_userChat_Chat">
+      <End Role="Chat" EntitySet="Chat" />
+      <End Role="userChat" EntitySet="userChat" />
+    </AssociationSet>
+    <AssociationSet Name="FK_userChat_User" Association="Self.FK_userChat_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="userChat" EntitySet="userChat" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
