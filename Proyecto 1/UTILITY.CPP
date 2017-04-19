@@ -83,6 +83,7 @@ extern "C"
     }
     void showcmdWindow(int window, int type)
     {
+	window++;
         clearcmd();
         gotoxy(XPOSUTILITY,YPOSUTILITY);
         if(type == 1)
@@ -108,6 +109,7 @@ extern "C"
     }
     void showcmdQuantum(int window, int milisegundos)
     {
+	window++;
         clearcmd();
         gotoxy(XPOSUTILITY,YPOSUTILITY);
         cprintf("Se ha colocado un quantum de %d segundos a la ventana %d", milisegundos,window);

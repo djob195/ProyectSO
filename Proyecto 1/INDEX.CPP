@@ -33,8 +33,8 @@ void paintSCREEN(int ID,int x, int y, int COLOR)
 {
         x++;
         y++;
-		x= (ID*25) + (x+3);
-		y = (ID*19) + (y+2);
+	x= ((ID%3)*25) + (x+3);
+	y = ((ID/3)*19) + (y+2);
         gotoxy(x,y);
     	textbackground(COLOR);
     	cprintf(" ");
@@ -47,8 +47,8 @@ void clean(int ID)
 	{
 	    for (int j = 0; j < 18; j++)
 	    {
-				pcbs[ID].screenPcb[i][j]=0;
-				paintSCREEN(ID, i, j, BLACK);    
+		pcbs[ID].screenPcb[i][j]=0;
+		paintSCREEN(ID, i, j, BLACK);    
 	    }
 	}
 }
@@ -73,7 +73,7 @@ int isPlay(int ID)
 
 int isWork(int ID)
 {
-	if( (isLive(ID)==1) && (isPlay(ID)==1) && (pcbs[ID].Quantum <= countClock) )
+	if( (isLive(ID)==1) && (isPlay(ID)==1) && (pcbs[ID].Quantum >= countClock) )
 	{
 		return 1;
 	}		
@@ -90,7 +90,6 @@ void activeScreen(int ID, int x, int y)
 	if( (isLive(ID)==1))
 	{
 		pcbs[ID].screenPcb[x][y]=1;
-		paintSCREEN(ID, x, y, BLUE);
 	}	
 }
 
