@@ -3,9 +3,9 @@
 extern "C"
 {
     struct pointPCB{
-        long x;
-        long y;
-        long z;
+        int x;
+        int y;
+        int z;
         int error;
     };
 class RenderKernel{

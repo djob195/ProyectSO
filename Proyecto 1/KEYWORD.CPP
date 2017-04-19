@@ -141,6 +141,7 @@ extern "C"
 		{
 			return -3;
 		}
+		window--;
 		return window;
 	}
 
@@ -169,9 +170,6 @@ extern "C"
 					getError(2);
 					return comando;
 				}
-				int quantum = token.num;
-				token =  tomaToken(prueba);
-				prueba = token.pointer;
 				window = inWindow(token);
 				if(window < 0)
 				{
@@ -179,6 +177,9 @@ extern "C"
 					getError(window);
 					return comando;
 				}
+				token =  tomaToken(prueba);
+				prueba = token.pointer;
+				int quantum = token.num;
 				comando.type = 6;
 				comando.window= window;
 				comando.quantum=quantum;
@@ -287,7 +288,7 @@ extern "C"
 		gotoxy(xpos,YPOS);
 		if(kbhit()!=0)
 		{
-			char caracter = getch();
+			char caracter = getche();
 			if(caracter == 13)
 			{
 				comando=selectAction();
@@ -295,11 +296,13 @@ extern "C"
 			}
 			else if(caracter == 8)
 			{
-				int i = desplazamientoPuntero();
-				commands[i] = ' ';
 				if(xpos > XMINPOS )
 				{
 					xpos--;
+					int i = desplazamientoPuntero();
+					commands[i] = ' ';
+					gotoxy(xpos,YPOS);
+					cprintf(" ");
 				}
 			}
 			else 	

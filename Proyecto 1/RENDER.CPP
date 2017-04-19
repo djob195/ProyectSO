@@ -23,9 +23,9 @@
 extern "C"
 {
     struct pointPCB{
-        long x;
-        long y;
-        long z;
+        int x;
+        int y;
+        int z;
         int error;
     };
 class RenderKernel{
@@ -171,8 +171,6 @@ struct pointPCB RenderKernel::getPointZ(int x, int y)
 	point.x--;
 	point.y--;
 	point.z = xRelativePos + (yRelativePos*(XMAXSCREEN)); 
-gotoxy(5,46);
-cprintf("ventana %d",point.z);
     return point;
 }
 }

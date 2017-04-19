@@ -28,6 +28,7 @@ extern "C"
 			token.num = 0;
 			return token;
 		}
+		int contadorCaracter = 0;
 		char word[7] = "";
 		int state = 0;
 		int flagExit = 0;
@@ -99,11 +100,21 @@ extern "C"
 			}
 			if(flagExit == 0)
 			{
-				char car[1];
-				car[0]= *input;
-				car[1]='\0';
-				strcat(word,car );
-				input++;
+				if (contadorCaracter < 7)
+				{
+					char car[1];
+					car[0]= *input;
+					car[1]='\0';
+					strcat(word,car );
+					input++;
+				}
+				else
+				{
+					token.word = 0;
+					token.type = -1;
+					token.pointer =  input;
+					return token;
+				}
 			}
 		};
 		if(state == 3)
@@ -116,9 +127,6 @@ extern "C"
 				return token;
 			}
 			token.num = atoi(word);
-			gotoxy(5,41);
-			cprintf("word: %d ", token.num);
-			getch();
 		}			
 		token.type = state;
 		token.word = word;
@@ -192,8 +200,8 @@ extern "C"
 					getError(2);
 					return comando;
 				}
-				int stats = token.num
-				if (stats != 1)
+				int stats = token.num;
+				if (stats < 0 || stats > 6)
 				{
 					getError(2);
 					return comando;
@@ -237,9 +245,6 @@ extern "C"
 					return comando;
 				}
 				token = tomaToken(prueba);
-				gotoxy(41,5);
-				cprintf("word: %d type: %d", token.num,token.type);
-				getch();
 				prueba = token.pointer;
 				window = inWindow(token);
 				if(window  < 0)
@@ -282,11 +287,20 @@ extern "C"
 		gotoxy(xpos,YPOS);
 		if(kbhit()!=0)
 		{
-			char caracter = getche();
+			char caracter = getcha();
 			if(caracter == 13)
 			{
 				comando=selectAction();
 				cleanScreen();
+			}
+			else if(caracter == 8)
+			{
+				int i = desplazamientoPuntero();
+				commands[i] = ' ';
+				if(xpos > XMINPOS )
+				{
+					xpos--;
+				}
 			}
 			else 	
 			{	

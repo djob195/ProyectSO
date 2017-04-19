@@ -4,6 +4,7 @@
 #include "mouse.h"
 #include "render.h"
 #include "keyword.h"
+#include "utility.h"
 
 #define INTTICK 0X1C    /* The clock tick   interrupt */
 #ifdef __cplusplus
@@ -15,7 +16,7 @@
 
 float countClock=0;
 float countIdle = 0;
-int exit = 0;
+int exitt = 0;
 int turno = 0;
 struct PCB
 {
@@ -25,7 +26,7 @@ struct PCB
 	int ID;
 	float Quantum;	
 	int contador;
-	int nowPaint;
+	int nowCaracter;
 };
 PCB pcbs [6];
 void paintSCREEN(int ID,int x, int y, int COLOR)    
@@ -37,6 +38,7 @@ void paintSCREEN(int ID,int x, int y, int COLOR)
         gotoxy(x,y);
     	textbackground(COLOR);
     	cprintf(" ");
+	textbackground(BLACK);
 }
 
 void clean(int ID)
@@ -85,9 +87,10 @@ void setQuantum(int ID,int quantum)
 
 void activeScreen(int ID, int x, int y)
 {
-	if( (isLive(ID)==1) && (isWork(ID)==1))
+	if( (isLive(ID)==1))
 	{
 		pcbs[ID].screenPcb[x][y]=1;
+		paintSCREEN(ID, x, y, BLUE);
 	}	
 }
 
@@ -101,7 +104,7 @@ void painted(int ID,int x, int y, int color)
 
 void blinkPCB()
 {
-	if(isWork(turno) == 1)
+	if(isWork(turno) == 0)
 	{
 		return;
 	}
@@ -137,6 +140,7 @@ void interrupt handler(__CPPARGS)
 	   }
 	   else
 	   {
+		   countClock = 0;
 		   countIdle+=0.018206;
 		   turno++;
 		   if(turno > 6)
@@ -173,16 +177,9 @@ void getDataClick(mData mouseData,RenderKernel *render)
 	{
 		pointPCB point;
 		point=render->getPointZ(mouseData.mouseX, mouseData.mouseY);
-		if(point.error> 0)
+		if(point.error== 0)
 		{
-			if(isLive(point.z))
-			{
-				activeScreen(point.z,point.x,point.y);
-			}
-			else
-			{
-				getError(6);
-			}
+			activeScreen(point.z,point.x,point.y);
 		}
 		else
 		{
@@ -308,22 +305,20 @@ void getDataKeyword(struct structComand cmd)
 		}
 		else
 		{
-			exit = 1;
+			exitt = 1;
 		}
 	}
 }
 
 int main(void)
-{	
+{
 	startPCBs();
 	ResetRaton();
 	RenderKernel *render = new RenderKernel();
 	startClock();
 	struct mData mouseData;
-	struct structComand cmd
-	oldhandler = getvect(INTTICK);
-	setvect(INTTICK, handler);
-	while (exit==0)
+	struct structComand cmd;
+	while (exitt==0)
 	{
 		mouseData = isClicked();
 		getDataClick(mouseData,render);
